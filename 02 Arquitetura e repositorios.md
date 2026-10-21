@@ -37,36 +37,7 @@ As aplicações se integram por autenticação padronizada e, quando necessário
 
 **Faz sentido quando:** os sistemas têm autonomia real e a equipe consegue manter a integração e a operação de várias aplicações.
 
-## Opção B — Monorepo com aplicações separadas
-
-Reunir os projetos em um repositório, sem obrigatoriamente transformá-los em uma aplicação única.
-
-```text
-ifro-plataforma/
-  apps/
-    hub/
-    cantina/
-    horarios/
-    chatbot/
-  packages/
-  infra/
-```
-
-Estrutura ilustrativa, a adaptar às tecnologias existentes. Cada aplicação pode ter seu próprio build e deploy.
-
-**Vantagens**
-- Centraliza a descoberta do código e os padrões de colaboração.
-- Permite revisar alterações coordenadas em um mesmo PR.
-- Facilita manter bibliotecas compartilhadas junto das aplicações consumidoras.
-
-**Custos e riscos**
-- Exige pipelines que identifiquem aplicações afetadas, inclusive por dependências compartilhadas.
-- Permissões de leitura do repositório não são normalmente separadas por diretório.
-- Centralizar o código não elimina a necessidade de integrar as aplicações em execução.
-
-**Faz sentido quando:** o grupo quer centralizar o trabalho no GitHub, mas preservar aplicações e publicações independentes.
-
-## Opção C — Monorepo com monólito modular
+## Opção B — Monorepo com monólito modular
 
 Migrar e adaptar as funcionalidades para uma aplicação única, com limites internos claros.
 
@@ -95,15 +66,44 @@ Se o framework escolhido permitir, namespaces e interfaces explícitas ajudam a 
 
 **Faz sentido quando:** o objetivo é uma aplicação única e o custo de adaptação é menor que o de manter integrações distribuídas.
 
+## Opção C — Monorepo com aplicações separadas
+
+Reunir os projetos em um repositório, sem obrigatoriamente transformá-los em uma aplicação única.
+
+```text
+ifro-plataforma/
+  apps/
+    hub/
+    cantina/
+    horarios/
+    chatbot/
+  packages/
+  infra/
+```
+
+Estrutura ilustrativa, a adaptar às tecnologias existentes. Cada aplicação pode ter seu próprio build e deploy.
+
+**Vantagens**
+- Centraliza a descoberta do código e os padrões de colaboração.
+- Permite revisar alterações coordenadas em um mesmo PR.
+- Facilita manter bibliotecas compartilhadas junto das aplicações consumidoras.
+
+**Custos e riscos**
+- Exige pipelines que identifiquem aplicações afetadas, inclusive por dependências compartilhadas.
+- Permissões de leitura do repositório não são normalmente separadas por diretório.
+- Centralizar o código não elimina a necessidade de integrar as aplicações em execução.
+
+**Faz sentido quando:** o grupo quer centralizar o trabalho no GitHub, mas preservar aplicações e publicações independentes.
+
 ## Comparação resumida
 
-| Critério | A: multirepo integrado | B: monorepo, aplicações separadas | C: monólito modular |
-| --- | --- | --- | --- |
-| Repositórios | Vários | Um | Um, na proposta apresentada |
-| Deploy independente | Possível por aplicação | Possível por aplicação | Não no modelo de deploy único |
-| Comunicação | Identidade compartilhada e APIs quando necessárias | Igual à opção A | Interfaces internas; APIs externas se necessário |
-| Mudança coordenada | Múltiplos PRs e releases | Pode caber em um PR | Pode caber em um PR |
-| Restrição de acesso ao código | Por repositório | Geralmente no repositório inteiro | Geralmente no repositório inteiro |
-| Isolamento de falhas | Depende da execução e das dependências | Depende da execução e das dependências | Menor isolamento de recursos no deploy único |
+| Critério                      | A: multirepo integrado                             | B: monólito modular                              | C: monorepo, aplicações separadas      |
+| ----------------------------- | -------------------------------------------------- | ------------------------------------------------ | -------------------------------------- |
+| Repositórios                  | Vários                                             | Um, na proposta apresentada                      | Um                                     |
+| Deploy independente           | Possível por aplicação                             | Não no modelo de deploy único                    | Possível por aplicação                 |
+| Comunicação                   | Identidade compartilhada e APIs quando necessárias | Interfaces internas; APIs externas se necessário | Igual à opção A                        |
+| Mudança coordenada            | Múltiplos PRs e releases                           | Pode caber em um PR                              | Pode caber em um PR                    |
+| Restrição de acesso ao código | Por repositório                                    | Geralmente no repositório inteiro                | Geralmente no repositório inteiro      |
+| Isolamento de falhas          | Depende da execução e das dependências             | Menor isolamento de recursos no deploy único     | Depende da execução e das dependências |
 
 Nenhuma opção garante, sozinha, menos conflitos, melhor desempenho ou menor custo. A decisão precisa considerar o estado dos sistemas e a capacidade de manutenção do grupo.
